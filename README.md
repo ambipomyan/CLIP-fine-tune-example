@@ -1,15 +1,10 @@
 # CLIP-fine-tune-example
 
 ##### Run
-using virtual environment to execute the script
+Use virtual environment to execute the script
 ```
 python sample_fine_tune_MNIST.python
 ```
-
-##### Design
-Use 5 x 10 samples in train dataset of MNIST to fine-tune the CLIP   
-Use 5 x 10 samples in test dataset of MNIST to test the CLIP   
-Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning
 
 ##### Data
 Use the .txt file of the format below: `data_path label`
@@ -21,8 +16,36 @@ data/MNIST/train/0/25.jpg 0
 data/MNIST/train/0/28.jpg 0
 ...
 ```
+##### Implementation
+Overall:
+```
+def main():
+    model = get_model(model_pre, device) # get the pre-trained model
+    
+    train_set = MyDataset("data/MNIST_train.txt")
+    train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0) # create data loader for training
+    
+    test_set = MyDataset("data/MNIST_test.txt")
+    test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0) # create data loader for testing
+    
+    train(model, device, train_loader, 20) # train
+    test(model, device, test_loader, 1) # test
+```
+###### load model
+Use `clip.load()` to get the pretrained model, there are multiple models provided, in this example, 4 of them are evaluated.
+Besides, the output layer can be modified to the only layer updating parameters, then, parameters are freezed and a fully-connected layer `model.fc` is attached
+
+###### load data
+Use `preprocess` and `clip.tokenize()` to get images and texts, then, the data needs to be loaded of the format: data_path label, then a costomized Dataset is needed
+
+###### train
+Use `model(images, texts)` to get logits
+
+###### test
+Use all 10 classes as the texts
 
 ##### Results
+Use 5 x 10 samples in train dataset of MNIST to fine-tune the CLIP. Use 5 x 10 samples in test dataset of MNIST to test the CLIP. Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning
 Before and after fine-tuning:
 ```
 RN50:      6% ->  4%
