@@ -16,7 +16,24 @@ data/MNIST/train/0/25.jpg 0
 data/MNIST/train/0/28.jpg 0
 ...
 ```
-In this example, both train and test data are of size 5 x 10(classes)
+In this example, both train and test data are of size 5 x 10(classes), and the data is strutured as follow:
+```
+-- MNIST
+    |-- train
+    |   |-- 0
+    |   |   |-- aaaa.jpg
+    |   |   |-- bbbb.jpg
+    |   |   |   ...
+    |   |   `-- zzzz.jpg
+    ...
+    `-- test
+        |-- 0
+        |   |-- AAAA.jpg
+        |   |-- BBBB.jpg
+        |   |   ...
+        |   `-- ZZZZ.jpg
+        ...
+```
 
 ##### Implementation
 ###### overall
