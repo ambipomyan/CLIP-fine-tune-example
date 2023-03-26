@@ -1,12 +1,12 @@
 # CLIP-fine-tune-example
 
-##### Run
+### Run
 Use virtual environment to execute the script
 ```
 python sample_fine_tune_MNIST.python
 ```
 
-##### Data
+### Data
 Use the .txt file of the format below: `data_path label`
 ```
 data/MNIST/train/0/3.jpg 0
@@ -35,7 +35,7 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
         ...
 ```
 
-##### Implementation
+### Implementation
 ###### overall
 Define a `main` method
 ```
@@ -64,7 +64,7 @@ Use `model(images, texts)` to get logits
 ###### test
 Use all 10 classes as the texts
 
-##### Results
+### Results
 Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning:
 ```
 RN50:      6% ->  4%
@@ -72,6 +72,6 @@ RN101:     0% -> 10%
 ViT-B/16:  0% ->  0%
 ViT-B/32: 10% -> 10%
 ```
-##### Reference
+### References
 - https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
