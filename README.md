@@ -38,7 +38,7 @@ Use `clip.load()` to get the pretrained model, there are multiple models provide
 Besides, the output layer can be modified to the only layer updating parameters, then, parameters are freezed and a fully-connected layer `model.fc` is attached
 
 ###### load data
-Use `preprocess` and `clip.tokenize()` to get images and texts, then, the data needs to be loaded of the format: data_path label, then a costomized Dataset is needed
+Use `preprocess()` and `clip.tokenize()` to get images and texts, then, the data needs to be loaded of the format: data_path label, then a costomized Dataset is needed
 
 ###### train
 Use `model(images, texts)` to get logits
