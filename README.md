@@ -72,3 +72,6 @@ RN101:     0% -> 10%
 ViT-B/16:  0% ->  0%
 ViT-B/32: 10% -> 10%
 ```
+##### Reference
+- https://github.com/openai/CLIP
+- https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
