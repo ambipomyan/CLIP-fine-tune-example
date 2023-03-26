@@ -20,6 +20,7 @@ In this example, both train and test data are of size 5 x 10(classes)
 
 ##### Implementation
 ###### overall
+Define a `main` method
 ```
 def main():
     model = get_model(model_pre, device) # get the pre-trained model
