@@ -72,6 +72,14 @@ RN101:     0% -> 10%
 ViT-B/16:  0% ->  0%
 ViT-B/32: 10% -> 10%
 ```
+Use "zero" to replace "0", etc.
+```
+RN50:      8% ->  4%
+RN101:     2% -> 10%
+ViT-B/16:  4% ->  8%
+ViT-B/32:  2% ->  2%
+```
+
 ### References
 - https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
