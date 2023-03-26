@@ -16,6 +16,8 @@ data/MNIST/train/0/25.jpg 0
 data/MNIST/train/0/28.jpg 0
 ...
 ```
+In this example, both train and test data are of size 5 x 10(classes)
+
 ##### Implementation
 Overall:
 ```
@@ -45,8 +47,7 @@ Use `model(images, texts)` to get logits
 Use all 10 classes as the texts
 
 ##### Results
-Use 5 x 10 samples in train dataset of MNIST to fine-tune the CLIP. Use 5 x 10 samples in test dataset of MNIST to test the CLIP. Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning
-Before and after fine-tuning:
+Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning:
 ```
 RN50:      6% ->  4%
 RN101:     0% -> 10%
