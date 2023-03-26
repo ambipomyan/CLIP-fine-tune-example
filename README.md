@@ -40,16 +40,16 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    model = get_model(model_pre, device) # get the pre-trained model
+    model = get_model(model_pre, device)
     
     train_set = MyDataset("data/MNIST_train.txt")
-    train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0) # create data loader for training
+    train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0)
     
     test_set = MyDataset("data/MNIST_test.txt")
-    test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0) # create data loader for testing
+    test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    train(model, device, train_loader, 20) # train
-    test(model, device, test_loader, 1) # test
+    train(model, device, train_loader, 20)
+    test(model, device, test_loader, 1)
 ```
 ###### load model
 Use `clip.load()` to get the pretrained model, there are multiple models provided, in this example, 4 of them are evaluated.
