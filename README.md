@@ -1,8 +1,13 @@
 # CLIP-fine-tune-example
 
 ### Workflow
-[!img]()
-[!img]()
+<img src="https://github.com/ambipomyan/CLIP-fine-tune-example/blob/main/example_01.png" alt= “example_01” width="500">
+training: contrastive learning - freeze parameters of the original model -> modify the output layer -> update the modified output layer only
+
+<img src="https://github.com/ambipomyan/CLIP-fine-tune-example/blob/main/example_02.png" alt= “example_02” width="500">
+inference: image-caption matching
+
+*images are adapted from: https://github.com/openai/CLIP
 
 ### Run
 Use virtual environment to execute the script
