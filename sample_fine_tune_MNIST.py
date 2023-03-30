@@ -1,15 +1,36 @@
 import torch
 import torch.nn as nn
 from torch.optim import Adam
-from torch.autograd import Variable
 from torch.utils.data import Dataset, DataLoader
+import torchvision.transforms as transforms
 import clip
 from PIL import Image
 import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_pre, preprocess = clip.load("ViT-B/32", device=device)
+model_pre, preprocess_pre = clip.load("RN50", device=device)
+
+# modifying model structure
+model = model_pre
+    
+for param in model.parameters():
+    param.requires_grad = False
+    
+model.fc = nn.Sequential(
+    nn.Flatten(),
+    nn.BatchNorm1d(4096),
+    nn.Dropout(0.5),
+    nn.Linear(4096, 512),
+    nn.ReLU(),
+    nn.BatchNorm1d(512),
+    nn.Linear(512, 10),
+    nn.LogSoftmax(dim=1)
+)
+
+# modifying preprocess
+preprocess = preprocess_pre
+
 
 class MyDataset(Dataset):
     def __init__(self, data_path):
@@ -32,25 +53,6 @@ class MyDataset(Dataset):
     def __len__(self):
         return len(self.data)
 
-def get_model(model_pre, device):
-    model = model_pre
-    
-    for param in model.parameters():
-        param.requires_grad = False
-    
-    model.fc = nn.Sequential(
-        nn.Flatten(),
-        nn.BatchNorm1d(4096),
-        nn.Dropout(0.5),
-        nn.Linear(4096, 512),
-        nn.ReLU(),
-        nn.BatchNorm1d(512),
-        nn.Linear(512, 10),
-        nn.LogSoftmax(dim=1)
-    )
-    
-    
-    return model
 
 def train(model, device, train_loader, epochs):
     loss_fn = nn.CrossEntropyLoss()
@@ -58,14 +60,12 @@ def train(model, device, train_loader, epochs):
 
     model.to(device)
 
-    model.train()
-
     for epoch in range(epochs):
         total_loss = 0.0
         for idx, data in enumerate(train_loader):
             images, texts = data
-            images = Variable(images.squeeze(1).to(device))
-            texts = Variable(texts.squeeze(1).to(device))
+            images = images.squeeze(1).to(device)
+            texts = texts.squeeze(1).to(device)
             
             optimizer.zero_grad()
             
@@ -87,8 +87,8 @@ def test(model, device, test_loader, epochs):
     with torch.no_grad():
         for idx, data in enumerate(test_loader):
             images, texts = data
-            images = Variable(images.squeeze(1).to(device))
-            texts = Variable(clip.tokenize(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]).to(device))
+            images = images.squeeze(1).to(device)
+            texts = clip.tokenize(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]).to(device)
             
             logits_per_image, logits_per_text = model(images, texts)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
@@ -99,13 +99,14 @@ def test(model, device, test_loader, epochs):
     
     print(counts*2)
 
+
 def main():
-    model = get_model(model_pre, device)
-    
-    train_set = MyDataset("data/MNIST_train.txt")
+    # already get the model and preprocess
+
+    train_set = MyDataset("data/MNIST_train_0.txt")
     train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0)
     
-    test_set = MyDataset("data/MNIST_test.txt")
+    test_set = MyDataset("data/MNIST_test_0.txt")
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
     train(model, device, train_loader, 20)
