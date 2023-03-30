@@ -92,3 +92,4 @@ ViT-B/32:  2% ->  2% -> 4%
 ### References
 - https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
+- https://github.com/openai/CLIP/issues/164
