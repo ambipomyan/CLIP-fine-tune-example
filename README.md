@@ -67,19 +67,20 @@ Use `model(images, texts)` to get logits
 Use all 10 classes as the texts
 
 ### Results
-Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning:
+5x10 image train, 5x10 image test, batch size 10, epoch 20
+Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> modifying model -> modifying preprocess)
 ```
-RN50:      6% ->  4%
-RN101:     0% -> 10%
-ViT-B/16:  0% ->  0%
-ViT-B/32: 10% -> 10%
+RN50:      6% ->  4% -> 4%
+RN101:     0% -> 10% -> 0%
+ViT-B/16:  0% ->  0% -> 4%
+ViT-B/32: 10% -> 10% -> 10%
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:      8% ->  4%
-RN101:     2% -> 10%
-ViT-B/16:  4% ->  8%
-ViT-B/32:  2% ->  2%
+RN50:      8% ->  4% -> 2%
+RN101:     2% -> 10% -> 2%
+ViT-B/16:  4% ->  8% -> 4%
+ViT-B/32:  2% ->  2% -> 4%
 ```
 
 ### References
