@@ -51,15 +51,20 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    train_set = MyDataset("data/MNIST_train.txt")
+    # already get the model and preprocess
+
+    train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
-    test_set = MyDataset("data/MNIST_test.txt")
+    test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    train(model, device, train_loader, 20)
-    test(model, device, test_loader, 1)
+    weights = zeroshot_classifier(classnames, templates)
+    
+    train(model, weights, device, train_loader, 20)
+    test(model, weights, device, test_loader, 1)
 ```
+
 ###### load model
 Use `clip.load()` to get the pretrained model, there are multiple models provided, in this example, 4 of them are evaluated.
 Besides, the output layer can be modified to the only layer updating parameters, then, parameters are freezed and a fully-connected layer `model.fc` is attached
@@ -68,7 +73,7 @@ Besides, the output layer can be modified to the only layer updating parameters,
 Use `preprocess()` and `clip.tokenize()` to get images and texts, then, the data needs to be loaded of the format: data_path label, then a costomized Dataset is needed
 
 ###### train
-Use `model(images, texts)` to get logits
+Use `model(images, texts)` to get logits or use `encode_image()`/`encode_text()` methods to get image/text features, then get logits
 
 ###### test
 Use all 10 classes as the texts
@@ -76,17 +81,17 @@ Use all 10 classes as the texts
 ### Results
 5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> modifying model -> modifying preprocess)
 ```
-RN50:      6% ->  4% -> 4%
-RN101:     0% -> 10% -> 0%
-ViT-B/16:  0% ->  0% -> 4%
-ViT-B/32: 10% -> 10% -> 10%
+RN50:
+RN101:
+ViT-B/16:
+ViT-B/32:
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:      8% ->  4% -> 2%
-RN101:     2% -> 10% -> 2%
-ViT-B/16:  4% ->  8% -> 4%
-ViT-B/32:  2% ->  2% -> 4%
+RN50:
+RN101:
+ViT-B/16:
+ViT-B/32:
 ```
 
 ### References
