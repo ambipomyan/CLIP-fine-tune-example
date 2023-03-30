@@ -52,7 +52,7 @@ Define a `main` method
 ```
 def main():
     train_set = MyDataset("data/MNIST_train.txt")
-    train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0)
+    train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
     test_set = MyDataset("data/MNIST_test.txt")
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
