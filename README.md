@@ -44,8 +44,6 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    model = get_model(model_pre, device)
-    
     train_set = MyDataset("data/MNIST_train.txt")
     train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0)
     
