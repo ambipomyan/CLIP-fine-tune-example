@@ -9,7 +9,7 @@ import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_pre, preprocess_pre = clip.load("RN50", device=device)
+model_pre, preprocess_pre = clip.load("RN101", device=device)
 
 # modifying model structure
 model = model_pre
@@ -29,11 +29,16 @@ model.fc = nn.Sequential(
 )
 
 # modifying preprocess
-preprocess = preprocess_pre
+preprocess = transforms.Compose([
+    transforms.Resize(224),
+    transforms.CenterCrop(224),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5])
+])
 
 
 class MyDataset(Dataset):
-    def __init__(self, data_path):
+    def __init__(self, data_path, preprocess):
         f = open(data_path, 'r')
         data = []
         for line in f:
@@ -45,7 +50,7 @@ class MyDataset(Dataset):
     def __getitem__(self, index):
         i, t = self.data[index]
         
-        image = preprocess(Image.open(i)).unsqueeze(0)
+        image = preprocess(Image.open(i).convert('RGB')).unsqueeze(0)
         text = clip.tokenize(t)
         
         return image, text
@@ -88,12 +93,13 @@ def test(model, device, test_loader, epochs):
         for idx, data in enumerate(test_loader):
             images, texts = data
             images = images.squeeze(1).to(device)
+            #texts = clip.tokenize(["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]).to(device)
             texts = clip.tokenize(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]).to(device)
             
             logits_per_image, logits_per_text = model(images, texts)
             probs = logits_per_image.softmax(dim=-1).cpu().numpy()
             
-            print(np.argmin(probs[0]))
+            #print(np.argmin(probs[0]))
             if np.argmin(probs[0]) > (int(idx/5)-1) and np.argmin(probs[0]) <= int(idx/5):
                 counts += 1
     
@@ -103,10 +109,10 @@ def test(model, device, test_loader, epochs):
 def main():
     # already get the model and preprocess
 
-    train_set = MyDataset("data/MNIST_train_0.txt")
-    train_loader = DataLoader(train_set, batch_size=50, shuffle=True, num_workers=0)
+    train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
+    train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
-    test_set = MyDataset("data/MNIST_test_0.txt")
+    test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
     train(model, device, train_loader, 20)
