@@ -3,7 +3,7 @@
 ### Run
 Use virtual environment to execute the script
 ```
-python sample_fine_tune_MNIST.python
+python sample_fine_tune_MNIST.py
 ```
 
 ### Data
@@ -18,23 +18,25 @@ data/MNIST/train/0/28.jpg 0
 ```
 In this example, both train and test data are of size 5 x 10(classes), and the data is strutured as follow:
 ```
--- MNIST_train.txt
--- MNIST_test.txt
--- MNIST
-    |-- train
-    |   |-- 0
-    |   |   |-- aaaa.jpg
-    |   |   |-- bbbb.jpg
-    |   |   |   ...
-    |   |   `-- zzzz.jpg
-    ...
-    `-- test
-        |-- 0
-        |   |-- AAAA.jpg
-        |   |-- BBBB.jpg
-        |   |   ...
-        |   `-- ZZZZ.jpg
-        ...
+-- sample_fine_tune_MNIST.py
+-- data
+   |-- MNIST_train.txt
+   |-- MNIST_test.txt
+   `-- MNIST
+       |-- train
+       |   |-- 0
+       |   |   |-- aaaa.jpg
+       |   |   |-- bbbb.jpg
+       |   |   |   ...
+       |   |   `-- zzzz.jpg
+       ...
+       `-- test
+           |-- 0
+           |   |-- AAAA.jpg
+           |   |-- BBBB.jpg
+           |   |   ...
+           |   `-- ZZZZ.jpg
+           ...
 ```
 
 ### Implementation
