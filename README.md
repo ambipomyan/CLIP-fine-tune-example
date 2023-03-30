@@ -1,5 +1,9 @@
 # CLIP-fine-tune-example
 
+### Workflow
+[!img]()
+[!img]()
+
 ### Run
 Use virtual environment to execute the script
 ```
