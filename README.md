@@ -79,19 +79,19 @@ Use `model(images, texts)` to get logits or use `encode_image()`/`encode_text()`
 Use all 10 classes as the texts
 
 ### Results
-5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> modifying model -> modifying preprocess)
+5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> fine-tuned)
 ```
-RN50:
-RN101:
-ViT-B/16:
-ViT-B/32:
+RN50:     56% -> 56%
+RN101:    52% -> 52%
+ViT-B/16: 66% -> 66%
+ViT-B/32: 52% -> 52%
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:
-RN101:
-ViT-B/16:
-ViT-B/32:
+RN50:     34% -> 34%
+RN101:    36% -> 36%
+ViT-B/16: 54% -> 54%
+ViT-B/32: 22% -> 22%
 ```
 
 ### References
