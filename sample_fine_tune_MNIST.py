@@ -72,7 +72,7 @@ def per_accurancy(probs):
     	    return i
     
 
-def zeroshot_classifier(classnames, templates):
+def zeroshot_classifier(model, classnames, templates):
     with torch.no_grad():
         weights = []
         for classname in classnames:
@@ -165,7 +165,7 @@ def main():
     )
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
     model_ft.eval()
-    weights = zeroshot_classifier(classnames, templates)
+    weights = zeroshot_classifier(model_ft, classnames, templates)
     test(model_ft, weights, device, test_loader, 1)
 
 if __name__ == '__main__':
