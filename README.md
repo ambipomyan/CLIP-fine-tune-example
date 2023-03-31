@@ -76,8 +76,6 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    ...
-
     train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
@@ -88,8 +86,7 @@ def main():
     
     torch.save(model.state_dict(), 'models/mnistCLIP.pt')
     
-    ...
-    
+    model_ft, preprocess_ft = clip.load('RN50', device=device)
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
     model_ft.eval()
     
