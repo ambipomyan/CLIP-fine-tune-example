@@ -59,9 +59,9 @@ def main():
     test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    weights = zeroshot_classifier(classnames, templates)
+    train(model, device, train_loader, 20)
     
-    train(model, weights, device, train_loader, 20)
+    weights = zeroshot_classifier(classnames, templates)
     test(model, weights, device, test_loader, 1)
 ```
 
