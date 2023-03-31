@@ -10,7 +10,32 @@ inference: image-caption matching after creating a classifier
 ### Run
 Use virtual environment to execute the script
 ```
+export LD_LIBRARY_PATH=/path/to/envs/clip/lib/:$LD_LIBRARY_PATH
 python sample_fine_tune_MNIST.py
+```
+When using 'RN50' the `loss`:
+```
+2.2762565135955812
+2.0903772354125976
+2.0065130233764648
+1.917322850227356
+1.847741389274597
+1.7837785959243775
+1.736946702003479
+1.6968570470809936
+1.678084373474121
+1.6762619018554688
+1.67263662815094
+1.6719923973083497
+1.6510158777236938
+1.6455634355545044
+1.6320341110229493
+1.629179835319519
+1.6243189573287964
+1.6205157995224
+1.6189888954162597
+1.6184375762939454
+...
 ```
 
 ### Data
@@ -89,17 +114,17 @@ Use all 10 classes as the (zero-shot) classifier
 ### Results
 5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> fine-tuned)
 ```
-RN50:     56% -> 56%
-RN101:    52% -> 52%
-ViT-B/16: 66% -> 66%
-ViT-B/32: 52% -> 52%
+RN50:     56% -> %
+RN101:    52% -> 68%
+ViT-B/16: 66% -> %
+ViT-B/32: 52% -> %
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:     34% -> 34%
-RN101:    36% -> 36%
-ViT-B/16: 54% -> 54%
-ViT-B/32: 22% -> 22%
+RN50:     34% -> %
+RN101:    36% -> %
+ViT-B/16: 54% -> %
+ViT-B/32: 22% -> %
 ```
 
 ### References
