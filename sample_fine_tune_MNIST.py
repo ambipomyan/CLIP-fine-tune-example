@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 from torch.optim import Adam
@@ -9,7 +10,7 @@ import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_pre, preprocess_pre = clip.load('ViT-B/16', device=device)
+model_pre, preprocess_pre = clip.load('RN101', device=device)
 
 # modifying model structure
 model = model_pre
@@ -34,7 +35,8 @@ preprocess = preprocess_pre
 #preprocess = transforms.Compose([
 #    transforms.Resize(224),
 #    transforms.CenterCrop(224),
-#    transforms.ToTensor()
+#    transforms.ToTensor(),
+    #transforms.Normalize((0.1307,), (0.3081,)),
 #])
 
 classnames = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ]
@@ -83,7 +85,7 @@ def zeroshot_classifier(classnames, templates):
             weights.append(class_embedding)
 
         weights = torch.stack(weights, dim=1).to(device)
-     
+        
         return weights
 
 
@@ -130,7 +132,8 @@ def test(model, weights, device, test_loader, epochs):
             logits = 100 * image_features @ weights
             probs = logits.softmax(dim=-1).cpu().numpy()
             
-            #print(per_accurancy(probs[0]))
+            print(per_accurancy(probs[0]))
+            print(probs[0])
             if per_accurancy(probs[0]) > (int(idx/5)-1) and per_accurancy(probs[0]) <= int(idx/5):
                 counts += 1
     
@@ -146,10 +149,24 @@ def main():
     test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    #train(model, device, train_loader, 20)
+    train(model, device, train_loader, 20)
+    torch.save(model.state_dict(), 'models/mnistCLIP.pt')
     
+    model_ft, preprocess_ft = clip.load('RN101', device=device)
+    model_ft.fc = nn.Sequential(
+        nn.Flatten(),
+        nn.BatchNorm1d(4096),
+        nn.Dropout(0.5),
+        nn.Linear(4096, 512),
+        nn.ReLU(),
+        nn.BatchNorm1d(512),
+        nn.Linear(512, 10),
+        nn.LogSoftmax(dim=1)
+    )
+    model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
+    model_ft.eval()
     weights = zeroshot_classifier(classnames, templates)
-    test(model, weights, device, test_loader, 1)
+    test(model_ft, weights, device, test_loader, 1)
 
 if __name__ == '__main__':
     main()
