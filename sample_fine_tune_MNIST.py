@@ -32,8 +32,7 @@ model.fc = nn.Sequential(
 preprocess = transforms.Compose([
     transforms.Resize(224),
     transforms.CenterCrop(224),
-    transforms.ToTensor(),
-    transforms.Normalize([0.5, 0.5, 0.5],[0.5, 0.5, 0.5])
+    transforms.ToTensor()
 ])
 
 classnames = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ]
@@ -85,7 +84,7 @@ def zeroshot_classifier(classnames, templates):
         return weights
 
 
-def train(model, weights, device, train_loader, epochs):
+def train(model, device, train_loader, epochs):
     loss_fn = nn.CrossEntropyLoss()
     optimizer = Adam(model.fc.parameters(), lr=0.001, weight_decay=0.0001)
 
@@ -96,8 +95,8 @@ def train(model, weights, device, train_loader, epochs):
         for idx, data in enumerate(train_loader):
             images, texts = data
             
-            images = images.to(device)
-            texts = texts.to(device)
+            images = images.squeeze(1).to(device)
+            texts = texts.squeeze(1).to(device)
             
             optimizer.zero_grad()
             
@@ -128,7 +127,7 @@ def test(model, weights, device, test_loader, epochs):
             logits = 100 * image_features @ weights
             probs = logits.softmax(dim=-1).cpu().numpy()
             
-            print(per_accurancy(probs[0]))
+            #print(per_accurancy(probs[0]))
             if per_accurancy(probs[0]) > (int(idx/5)-1) and per_accurancy(probs[0]) <= int(idx/5):
                 counts += 1
     
@@ -144,9 +143,9 @@ def main():
     test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    weights = zeroshot_classifier(classnames, templates)
+    train(model, device, train_loader, 20)
     
-    #train(model, weights, device, train_loader, 20)
+    weights = zeroshot_classifier(classnames, templates)
     test(model, weights, device, test_loader, 1)
 
 if __name__ == '__main__':
