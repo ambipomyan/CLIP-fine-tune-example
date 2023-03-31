@@ -105,27 +105,28 @@ Use `preprocess()` and `clip.tokenize()` to get images and texts, then, the data
 Use `model(images, texts)` to get logits or use `encode_image()`/`encode_text()` methods to get image/text features, then get logits
 
 ###### test
-Use all 10 classes as the (zero-shot) classifier
+Use all 10 classes as the (zero-shot) classifier, use `encode_image()`/`encode_text()` methods to get image/text features, then get logits
 
 ### Results
 5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> fine-tuned)
 ```
-RN50:     56% -> 60%
-RN101:    52% -> 68%
-ViT-B/16: 66% -> %
-ViT-B/32: 52% -> %
+RN50:     58% -> 60%
+RN101:    54% -> 68%
+ViT-B/16: 66% -> 88%
+ViT-B/32: 44% -> 68%
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:     34% -> %
-RN101:    36% -> %
-ViT-B/16: 54% -> %
-ViT-B/32: 22% -> %
+RN50:     34% -> 54%
+RN101:    38% -> 48%
+ViT-B/16: 54% -> 82%
+ViT-B/32: 22% -> 32%
 ```
 *These resutls are on CPU, there still some problems for execution on GPU, mainly caused by data type
 
 ### References
-- https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
+- https://github.com/openai/CLIP
 - https://github.com/openai/CLIP/issues/164
+- https://github.com/openai/CLIP/issues/83
 - https://github.com/openai/CLIP/issues/57
