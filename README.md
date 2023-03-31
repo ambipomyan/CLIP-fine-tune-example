@@ -51,7 +51,7 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    # already get the model and preprocess
+    ...
 
     train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
@@ -60,22 +60,16 @@ def main():
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
     train(model, device, train_loader, 20)
+    
     torch.save(model.state_dict(), 'models/mnistCLIP.pt')
     
-    model_ft, preprocess_ft = clip.load('RN101', device=device)
-    model_ft.fc = nn.Sequential(
-        nn.Flatten(),
-        nn.BatchNorm1d(4096),
-        nn.Dropout(0.5),
-        nn.Linear(4096, 512),
-        nn.ReLU(),
-        nn.BatchNorm1d(512),
-        nn.Linear(512, 10),
-        nn.LogSoftmax(dim=1)
-    )
+    ...
+    
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
     model_ft.eval()
+    
     weights = zeroshot_classifier(model_ft, classnames, templates)
+    
     test(model_ft, weights, device, test_loader, 1)
 ```
 
