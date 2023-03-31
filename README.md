@@ -88,7 +88,6 @@ def main():
     
     model_ft, preprocess_ft = clip.load('RN50', device=device)
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
-    model_ft.eval()
     
     weights = zeroshot_classifier(model_ft, classnames, templates)
     
