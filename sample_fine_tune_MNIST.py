@@ -9,7 +9,7 @@ import numpy as np
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model_pre, preprocess_pre = clip.load('RN50', device=device)
+model_pre, preprocess_pre = clip.load('ViT-B/16', device=device)
 
 # modifying model structure
 model = model_pre
@@ -29,13 +29,16 @@ model.fc = nn.Sequential(
 )
 
 # modifying preprocess
-preprocess = transforms.Compose([
-    transforms.Resize(224),
-    transforms.CenterCrop(224),
-    transforms.ToTensor()
-])
+preprocess = preprocess_pre
+
+#preprocess = transforms.Compose([
+#    transforms.Resize(224),
+#    transforms.CenterCrop(224),
+#    transforms.ToTensor()
+#])
 
 classnames = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ]
+#classnames = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', ]
 templates = ['a photo of the number: "{}".', ]
 
 class MyDataset(Dataset):
@@ -143,7 +146,7 @@ def main():
     test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    train(model, device, train_loader, 20)
+    #train(model, device, train_loader, 20)
     
     weights = zeroshot_classifier(classnames, templates)
     test(model, weights, device, test_loader, 1)
