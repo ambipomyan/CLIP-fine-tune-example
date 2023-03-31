@@ -75,7 +75,7 @@ def main():
     )
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
     model_ft.eval()
-    weights = zeroshot_classifier(classnames, templates)
+    weights = zeroshot_classifier(model_ft, classnames, templates)
     test(model_ft, weights, device, test_loader, 1)
 ```
 
