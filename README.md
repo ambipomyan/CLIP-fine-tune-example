@@ -114,7 +114,7 @@ Use all 10 classes as the (zero-shot) classifier
 ### Results
 5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> fine-tuned)
 ```
-RN50:     56% -> %
+RN50:     56% -> 60%
 RN101:    52% -> 68%
 ViT-B/16: 66% -> %
 ViT-B/32: 52% -> %
@@ -126,8 +126,10 @@ RN101:    36% -> %
 ViT-B/16: 54% -> %
 ViT-B/32: 22% -> %
 ```
+*These resutls are on CPU, there still some problems for execution on GPU, mainly caused by data type
 
 ### References
 - https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
 - https://github.com/openai/CLIP/issues/164
+- https://github.com/openai/CLIP/issues/57
