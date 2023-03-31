@@ -10,7 +10,32 @@ inference: image-caption matching after creating a classifier
 ### Run
 Use virtual environment to execute the script
 ```
+export LD_LIBRARY_PATH=/path/to/envs/clip/lib/:$LD_LIBRARY_PATH
 python sample_fine_tune_MNIST.py
+```
+When using 'RN50' the `loss`:
+```
+2.2762565135955812
+2.0903772354125976
+2.0065130233764648
+1.917322850227356
+1.847741389274597
+1.7837785959243775
+1.736946702003479
+1.6968570470809936
+1.678084373474121
+1.6762619018554688
+1.67263662815094
+1.6719923973083497
+1.6510158777236938
+1.6455634355545044
+1.6320341110229493
+1.629179835319519
+1.6243189573287964
+1.6205157995224
+1.6189888954162597
+1.6184375762939454
+...
 ```
 
 ### Data
@@ -51,8 +76,6 @@ In this example, both train and test data are of size 5 x 10(classes), and the d
 Define a `main` method
 ```
 def main():
-    ...
-
     train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
@@ -63,10 +86,8 @@ def main():
     
     torch.save(model.state_dict(), 'models/mnistCLIP.pt')
     
-    ...
-    
+    model_ft, preprocess_ft = clip.load('RN50', device=device)
     model_ft.load_state_dict(torch.load('models/mnistCLIP.pt'))
-    model_ft.eval()
     
     weights = zeroshot_classifier(model_ft, classnames, templates)
     
@@ -84,25 +105,28 @@ Use `preprocess()` and `clip.tokenize()` to get images and texts, then, the data
 Use `model(images, texts)` to get logits or use `encode_image()`/`encode_text()` methods to get image/text features, then get logits
 
 ###### test
-Use all 10 classes as the (zero-shot) classifier
+Use all 10 classes as the (zero-shot) classifier, use `encode_image()`/`encode_text()` methods to get image/text features, then get logits
 
 ### Results
 5x10 image train, 5x10 image test, batch size 10, epoch 20: Compare the accurancy measured by ratio before (zero-shot inference) and after fine-tuning: (original -> fine-tuned)
 ```
-RN50:     56% -> 56%
-RN101:    52% -> 52%
-ViT-B/16: 66% -> 66%
-ViT-B/32: 52% -> 52%
+RN50:     58% -> 60%
+RN101:    54% -> 68%
+ViT-B/16: 66% -> 88%
+ViT-B/32: 44% -> 68%
 ```
 Use "zero" to replace "0", etc.
 ```
-RN50:     34% -> 34%
-RN101:    36% -> 36%
-ViT-B/16: 54% -> 54%
-ViT-B/32: 22% -> 22%
+RN50:     34% -> 54%
+RN101:    38% -> 48%
+ViT-B/16: 54% -> 82%
+ViT-B/32: 22% -> 32%
 ```
+*These resutls are on CPU, there still some problems for execution on GPU, mainly caused by data type
 
 ### References
-- https://github.com/openai/CLIP
 - https://learn.microsoft.com/en-us/windows/ai/windows-ml/tutorials/pytorch-train-model
+- https://github.com/openai/CLIP
 - https://github.com/openai/CLIP/issues/164
+- https://github.com/openai/CLIP/issues/83
+- https://github.com/openai/CLIP/issues/57
