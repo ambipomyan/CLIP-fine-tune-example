@@ -5,7 +5,7 @@
 training: contrastive learning - freeze parameters of the original model -> modify the output layer -> update the modified output layer only
 
 <img src="https://github.com/ambipomyan/CLIP-fine-tune-example/blob/main/example_02.png" alt= “example_02” width="500">
-inference: image-caption matching
+inference: image-caption matching after creating a classifier
 
 ### Run
 Use virtual environment to execute the script
@@ -59,9 +59,9 @@ def main():
     test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
-    weights = zeroshot_classifier(classnames, templates)
+    train(model, device, train_loader, 20)
     
-    train(model, weights, device, train_loader, 20)
+    weights = zeroshot_classifier(classnames, templates)
     test(model, weights, device, test_loader, 1)
 ```
 
