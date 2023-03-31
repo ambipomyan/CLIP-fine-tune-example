@@ -14,9 +14,10 @@ model_pre, preprocess_pre = clip.load('RN101', device=device)
 
 # modifying model structure
 model = model_pre
-    
-for param in model.parameters():
-    param.requires_grad = False
+
+for name, param in model.named_parameters():
+    if 'fc' not in name:
+        param.requires_grad = False
     
 model.fc = nn.Sequential(
     nn.Flatten(),
@@ -109,7 +110,6 @@ def train(model, device, train_loader, epochs):
             
             loss = loss_fn(logits_images, logits_texts)
             
-            loss.requires_grad_(True)
             loss.backward()
             
             optimizer.step()
@@ -146,7 +146,7 @@ def main():
     train_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     train_loader = DataLoader(train_set, batch_size=10, shuffle=True, num_workers=0)
     
-    test_set = MyDataset("data/MNIST_test_0.txt", preprocess)
+    test_set = MyDataset("data/MNIST_train_0.txt", preprocess)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False, num_workers=0)
     
     train(model, device, train_loader, 20)
