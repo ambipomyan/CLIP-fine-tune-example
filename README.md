@@ -5,7 +5,7 @@
 training: contrastive learning - freeze parameters of the original model -> modify the output layer -> update the modified output layer only
 
 <img src="https://github.com/ambipomyan/CLIP-fine-tune-example/blob/main/example_02.png" alt= “example_02” width="500">
-inference: image-caption matching
+inference: image-caption matching after creating a classifier
 
 ### Run
 Use virtual environment to execute the script
